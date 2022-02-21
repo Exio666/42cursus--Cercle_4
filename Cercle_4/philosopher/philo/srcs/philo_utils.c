@@ -1,18 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 10:36:10 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/15 13:45:14 by bsavinel         ###   ########.fr       */
+/*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
+/*   Updated: 2022/02/21 17:40:12 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
-static int	ft_isspace(char c)
+int	check_int(char *str)
+{
+	int			len;
+	int			i;
+	long int	nb;
+
+	i = 0;
+	len = ft_strlen(str);
+	if (str[0] == '-')
+		i++;
+	while (str[i] == '0' && i < len - 1)
+		i++;
+	len = ft_strlen(&str[i]);
+	if (len > 10 || len <= 0)
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	nb = ft_atoi_long(str);
+	if (nb < -2147483648 || nb > 2147483647)
+		return (0);
+	return (1);
+}
+
+int	ft_isspace(char c)
 {
 	if (c == ' ' || c == '\f' || c == '\n')
 		return (1);
