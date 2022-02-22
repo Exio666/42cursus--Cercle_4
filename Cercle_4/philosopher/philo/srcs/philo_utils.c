@@ -6,11 +6,28 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/21 17:40:12 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/22 16:00:32 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != 0)
+		i++;
+	return (i);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
 
 int	check_int(char *str)
 {
@@ -20,8 +37,6 @@ int	check_int(char *str)
 
 	i = 0;
 	len = ft_strlen(str);
-	if (str[0] == '-')
-		i++;
 	while (str[i] == '0' && i < len - 1)
 		i++;
 	len = ft_strlen(&str[i]);
@@ -33,8 +48,8 @@ int	check_int(char *str)
 			return (0);
 		i++;
 	}
-	nb = ft_atoi_long(str);
-	if (nb < -2147483648 || nb > 2147483647)
+	nb = ft_atol(str);
+	if (nb < 0 || nb > 2147483647)
 		return (0);
 	return (1);
 }
@@ -48,34 +63,7 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-int	ft_atoi(const char *nptr)
-{
-	int	neg;
-	int	i;
-	int	nb;
-
-	i = 0;
-	nb = 0;
-	neg = 1;
-	while (ft_isspace(nptr[i]) == 1)
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			neg = -1;
-		i++;
-	}
-	while (nptr[i] <= '9' && nptr[i] >= '0')
-	{
-		nb = nb * 10 + nptr[i] - 48;
-		i++;
-	}
-	if (neg == -1)
-		nb = -nb;
-	return (nb);
-}
-
-long int	ft_atoi_long(const char *nptr)
+long int	ft_atol(const char *nptr)
 {
 	long int	neg;
 	int			i;
