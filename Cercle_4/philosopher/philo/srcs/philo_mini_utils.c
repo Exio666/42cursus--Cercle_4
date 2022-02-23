@@ -1,28 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_mini_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 13:50:45 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:44:05 by bsavinel         ###   ########.fr       */
+/*   Created: 2022/02/23 16:52:20 by bsavinel          #+#    #+#             */
+/*   Updated: 2022/02/23 18:21:55 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int ac, char **av)
+int	ft_strlen(const char *s)
 {
-	t_global	*global;
+	int	i;
 
-	global = create_global(ac, av);
-	if (!global)
-		return (exit_no_arg());
-	if (!creation_tab_philo(global))
-		return (exit_no_tab_philo(global));
-	printf("Tout est ok ?????\n");
-	good_end(global);
-	printf("Tout est ok !!!!!\n");
+	i = 0;
+	while (s[i] != 0)
+		i++;
+	return (i);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
 	return (0);
+}
+
+int	ft_isspace(char c)
+{
+	if (c == ' ' || c == '\f' || c == '\n')
+		return (1);
+	else if (c == '\r' || c == '\t' || c == '\v')
+		return (1);
+	return (0);
+}
+
+int	give_utime(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		return (-1);
+	return (time.tv_usec);
 }

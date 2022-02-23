@@ -6,28 +6,11 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/22 16:00:32 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/23 16:53:12 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != 0)
-		i++;
-	return (i);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
-}
 
 int	check_int(char *str)
 {
@@ -52,15 +35,6 @@ int	check_int(char *str)
 	if (nb < 0 || nb > 2147483647)
 		return (0);
 	return (1);
-}
-
-int	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\f' || c == '\n')
-		return (1);
-	else if (c == '\r' || c == '\t' || c == '\v')
-		return (1);
-	return (0);
 }
 
 long int	ft_atol(const char *nptr)

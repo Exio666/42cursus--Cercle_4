@@ -6,14 +6,17 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/02/22 19:28:30 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/02/23 18:47:59 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	srcs/main.c			\
-		srcs/philo_utils.c	\
-		srcs/start.c		\
-		srcs/end.c
+SRCS =	srcs/end_tools.c		\
+		srcs/end.c				\
+		srcs/init_global.c		\
+		srcs/init_tab_philo.c	\
+		srcs/main.c				\
+		srcs/philo_mini_utils.c	\
+		srcs/philo_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -21,7 +24,7 @@ DEPS = $(SRCS:.c=.d)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD
+CFLAGS = -Wall -Wextra -Werror -MMD -pthread
 
 RM = rm -f
 

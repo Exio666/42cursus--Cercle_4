@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   end_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 13:50:45 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:44:05 by bsavinel         ###   ########.fr       */
+/*   Created: 2022/02/23 18:24:38 by bsavinel          #+#    #+#             */
+/*   Updated: 2022/02/23 18:57:09 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int ac, char **av)
+int	fusion_philo(t_global *global, int nb_philo)
 {
-	t_global	*global;
+	int	i;
 
-	global = create_global(ac, av);
-	if (!global)
-		return (exit_no_arg());
-	if (!creation_tab_philo(global))
-		return (exit_no_tab_philo(global));
-	printf("Tout est ok ?????\n");
-	good_end(global);
-	printf("Tout est ok !!!!!\n");
-	return (0);
+	i = 0;
+	while (i < nb_philo)
+	{
+		pthread_join(global->tab_ptread[i], NULL);
+		i++;
+	}
+	return (1);
+}
+
+int	destruc_fork(t_global *global, int nb_fork)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_fork)
+	{
+		pthread_mutex_destroy(&global->tab_fork[i]);
+		i++;
+	}
+	free(global->tab_fork);
+	return (1);
 }
