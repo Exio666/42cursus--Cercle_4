@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:31:34 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:53:11 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/23 19:03:22 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,11 @@ t_global	*create_global(int ac, char **av)
 	new->death = 0;
 	new->info = feed_info(ac, av);
 	new->tab_fork = creation_tab_fork(new);
-	printf("LA ?\n");
 	if (!new->tab_fork)
 	{
 		free(new);
 		return (NULL);
 	}
-	printf("ICI ?\n");
 	new->time_start = give_utime();
 	return (new);
 }

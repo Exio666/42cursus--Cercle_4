@@ -6,11 +6,12 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/02/23 18:47:59 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/02/23 19:19:03 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	srcs/end_tools.c		\
+SRCS =	srcs/create_thread.c	\
+		srcs/end_tools.c		\
 		srcs/end.c				\
 		srcs/init_global.c		\
 		srcs/init_tab_philo.c	\
@@ -24,7 +25,7 @@ DEPS = $(SRCS:.c=.d)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD -pthread
+CFLAGS = -Wall -Wextra -Werror -MMD -pthread -g3 -fsanitize=thread
 
 RM = rm -f
 

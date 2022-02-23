@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 18:00:41 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:56:25 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/23 19:18:30 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	good_end(t_global *global)
 	fusion_philo(global, global->info.nb_philo);
 	destruc_fork(global, global->info.nb_philo);
 	free(global->tab_philo);
+	free(global->tab_pthread);
 	free(global);
 	return (1);
 }

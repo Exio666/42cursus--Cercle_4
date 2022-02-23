@@ -1,40 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   end_tools.c                                        :+:      :+:    :+:   */
+/*   create_thread.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/23 18:24:38 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 19:04:03 by bsavinel         ###   ########.fr       */
+/*   Created: 2022/02/23 19:04:33 by bsavinel          #+#    #+#             */
+/*   Updated: 2022/02/23 19:17:12 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	fusion_philo(t_global *global, int nb_philo)
+void	*test(void *pointeur)
 {
-	int	i;
+	t_philo *philo;
 
-	i = 0;
-	while (i < nb_philo)
-	{
-		pthread_join(global->tab_pthread[i], NULL);
-		i++;
-	}
-	return (1);
+	philo = pointeur;
+	printf("je suis le %i philosophe\n", philo->name);
+	return (NULL);
 }
 
-int	destruc_fork(t_global *global, int nb_fork)
+int	launch_philo(t_global *global)
 {
 	int	i;
-
+	int err;
+	
 	i = 0;
-	while (i < nb_fork)
+	global->tab_pthread = malloc(sizeof(pthread_t) * global->info.nb_philo);
+	if (!global->tab_pthread)
+		return (-1);
+	while (i < global->info.nb_philo)
 	{
-		pthread_mutex_destroy(&global->tab_fork[i]);
+		err = pthread_create(&global->tab_pthread[i], NULL, &test,
+			&global->tab_philo[i]);
+		if (err != 0)
+			return (i);
 		i++;
 	}
-	free(global->tab_fork);
-	return (1);
+	return (0);
 }

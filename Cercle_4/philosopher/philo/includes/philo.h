@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:52:47 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/23 19:13:24 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,15 @@ typedef struct s_global
 	t_info			info;
 	pthread_mutex_t	*tab_fork;
 	suseconds_t		time_start;
-	pthread_t		*tab_ptread;
+	pthread_t		*tab_pthread;
 	t_philo			*tab_philo;
 }	t_global;
+
+/*
+ *	create_thread.c
+ */
+
+int				launch_philo(t_global *global);
 
 /*
  *	end_tools.c
