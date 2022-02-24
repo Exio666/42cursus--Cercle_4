@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:39:55 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:55:28 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/24 10:57:09 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ int	creation_tab_philo(t_global *global)
 	{
 		global->tab_philo[i].name = i;
 		global->tab_philo[i].first_hand = i % 2;
-		global->tab_philo[i].fork_right = global->tab_fork[i];
-		global->tab_philo[i].fork_left = global->tab_fork[(i + 1) % nb_philo];
+		global->tab_philo[i].fork_right = &global->tab_fork[i];
+		global->tab_philo[i].fork_left = &global->tab_fork[(i + 1) % nb_philo];
 		global->tab_philo[i].status = thinking;
 		global->tab_philo[i].global = global;
 		global->tab_philo[i].date_of_death = give_utime()
 			+ global->info.time_to_die;
+		global->tab_philo[i].info = global->info;
+		global->tab_philo[i].number_of_eat = 0;
 		i++;
 	}
 	return (1);

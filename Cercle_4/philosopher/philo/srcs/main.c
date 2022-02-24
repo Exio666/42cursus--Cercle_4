@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:50:45 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 19:12:19 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/24 12:11:18 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	main(int ac, char **av)
 	err = launch_philo(global);
 	if (err)
 		return (0);
+	while (check_death_global(global, &global->mutt_death))
+		;
 	good_end(global);
 	return (0);
 }

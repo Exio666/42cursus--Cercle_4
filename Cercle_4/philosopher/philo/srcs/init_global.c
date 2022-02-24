@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:31:34 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 19:03:22 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/24 09:48:46 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ t_global	*create_global(int ac, char **av)
 		free(new);
 		return (NULL);
 	}
+	pthread_mutex_init(&new->mutt_print, NULL);
+	pthread_mutex_init(&new->mutt_death, NULL);
 	new->time_start = give_utime();
 	return (new);
 }
@@ -112,7 +114,6 @@ int	launch_philo(t_global *global, t_global copie)
 	return (1);
 }
 
-
 int	creation_tab_fork(t_global *global)
 {
 	int	i;
@@ -143,9 +144,4 @@ int	creation_tab_fork(t_global *global)
 	}
 	return (1);
 }
-
-
-
-
-
 */

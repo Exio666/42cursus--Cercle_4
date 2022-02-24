@@ -6,7 +6,7 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/02/23 19:19:03 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/02/24 12:05:06 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS =	srcs/create_thread.c	\
 		srcs/init_tab_philo.c	\
 		srcs/main.c				\
 		srcs/philo_mini_utils.c	\
-		srcs/philo_utils.c
+		srcs/philo_utils.c		\
+		srcs/routine.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -25,7 +26,7 @@ DEPS = $(SRCS:.c=.d)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD -pthread -g3 -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -MMD -pthread# -g3 -fsanitize=thread
 
 RM = rm -f
 
