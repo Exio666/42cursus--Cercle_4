@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:31:34 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/24 09:48:46 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/28 12:12:12 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ t_info	feed_info(int ac, char **av)
 	t_info	info;
 
 	info.nb_philo = (int)atol(av[1]);
-	info.time_to_die = (int)atol(av[2]);
-	info.time_to_eat = (int)atol(av[3]);
-	info.time_to_sleep = (int)atol(av[4]);
+	info.time_to_die = (size_t)atol(av[2]);
+	info.time_to_eat = (size_t)atol(av[3]);
+	info.time_to_sleep = (size_t)atol(av[4]);
 	if (ac == 6)
 		info.number_eat = (int)atol(av[5]);
 	else

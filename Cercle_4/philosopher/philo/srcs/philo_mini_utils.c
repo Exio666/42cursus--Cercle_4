@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:52:20 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 18:21:55 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/28 12:13:16 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,20 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-int	give_utime(void)
+size_t	give_utime(void)
 {
 	struct timeval	time;
 
 	if (gettimeofday(&time, NULL) == -1)
 		return (-1);
-	return (time.tv_usec);
+	return ((size_t)time.tv_sec * 1000 + (size_t)time.tv_usec / 1000);
+}
+
+void	_usleep(size_t time)
+{
+	size_t sleep;
+
+	sleep = give_utime() + time;
+	while (give_utime() < sleep)
+		usleep(1);
 }

@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/24 12:10:18 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/28 13:48:04 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,11 @@ long int	ft_atol(const char *nptr)
 	return (nb);
 }
 
-void	printer_mutex(pthread_mutex_t *muttex, int name, char *str)
+void	printer_mutex(t_philo *philo, pthread_mutex_t *muttex, int name, char *str)
 {
 	pthread_mutex_lock(muttex);
-	printf("%i %i %s\n", give_utime(), name, str);
+	(void)philo;
+	printf("%010li %i %s\n", give_utime() - philo->global->time_start, name, str);
 	pthread_mutex_unlock(muttex);
 }
 
