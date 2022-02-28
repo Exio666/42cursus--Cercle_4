@@ -6,11 +6,12 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/02/28 11:08:18 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/02/28 18:49:53 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS =	srcs/create_thread.c	\
+		srcs/death.c			\
 		srcs/end_tools.c		\
 		srcs/end.c				\
 		srcs/init_global.c		\
@@ -26,7 +27,7 @@ DEPS = $(SRCS:.c=.d)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD -pthread
+CFLAGS = -Wall -Wextra -Werror -MMD -pthread -g3 -fsanitize=thread
 
 RM = rm -f
 

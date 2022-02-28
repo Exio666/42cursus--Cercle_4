@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 12:10:12 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/28 18:40:20 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef enum e_status
 typedef struct s_info
 {
 	int			nb_philo;
-	size_t	time_to_die;
-	size_t	time_to_eat;
-	size_t	time_to_sleep;
+	size_t		time_to_die;
+	size_t		time_to_eat;
+	size_t		time_to_sleep;
 	int			number_eat;
 }	t_info;
 
@@ -61,7 +61,7 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_right;
 	t_status		status;
 	struct s_global	*global;
-	size_t		date_of_death;
+	size_t			date_of_death;
 	t_info			info;
 	int				number_of_eat;
 }	t_philo;
@@ -73,7 +73,7 @@ typedef struct s_global
 	int				death;
 	t_info			info;
 	pthread_mutex_t	*tab_fork;
-	size_t		time_start;
+	size_t			time_start;
 	pthread_t		*tab_pthread;
 	t_philo			*tab_philo;
 }	t_global;
@@ -83,6 +83,15 @@ typedef struct s_global
  */
 
 int				launch_philo(t_global *global);
+
+/*
+ *	death.c
+ */
+
+int				check_death(t_philo *philo, pthread_mutex_t *muttex);
+int				check_death_global(t_global *global, pthread_mutex_t *muttex);
+void			modifier_death(t_philo *philo, pthread_mutex_t *muttex,
+					int value);
 
 /*
  *	end_tools.c
@@ -122,7 +131,7 @@ int				creation_tab_philo(t_global *global);
 int				ft_strlen(const char *s);
 int				ft_isdigit(int c);
 int				ft_isspace(char c);
-size_t		give_utime(void);
+size_t			give_utime(void);
 void			_usleep(size_t time);
 
 /*
@@ -131,7 +140,8 @@ void			_usleep(size_t time);
 
 int				check_int(char *str);
 long int		ft_atol(const char *nptr);
-void			printer_mutex(t_philo *philo, pthread_mutex_t *muttex, int name, char *str);
+void			printer_mutex(t_philo *philo, pthread_mutex_t *muttex,
+					int name, char *str);
 int				check_death(t_philo *philo, pthread_mutex_t *muttex);
 int				check_death_global(t_global *global, pthread_mutex_t *muttex);
 void			modifier_death(t_philo *philo, pthread_mutex_t *muttex,

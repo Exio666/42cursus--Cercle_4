@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 08:50:28 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 14:01:32 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/28 18:44:54 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	start_sleep(t_philo *philo)
 {
 	printer_mutex(philo, &philo->global->mutt_print, philo->name, "is sleeping");
 	_usleep(philo->info.time_to_sleep);
+	if (give_utime() > philo->date_of_death)
+		modifier_death(philo, &philo->global->mutt_death, -1);
 	printer_mutex(philo, &philo->global->mutt_print, philo->name, "is thinking");
 	_usleep(1);
 	start_eat(philo);
@@ -37,10 +39,7 @@ void	start_eat(t_philo *philo)
 		_usleep(philo->info.time_to_eat);
 	}
 	if (give_utime() > philo->date_of_death)
-	{
-		printer_mutex(philo, &philo->global->mutt_print, philo->name, "died");
 		modifier_death(philo, &philo->global->mutt_death, -1);
-	}
 	else
 	{
 		philo->number_of_eat += 1;
@@ -48,6 +47,8 @@ void	start_eat(t_philo *philo)
 	}
 	pthread_mutex_unlock(philo->fork_left);
 	pthread_mutex_unlock(philo->fork_right);
+	if (philo->number_of_eat != philo->info.number_eat)
+		modifier_death(philo, &philo->global->mutt_death, 1);
 	if (check_death(philo, &philo->global->mutt_death) && philo->number_of_eat != philo->info.number_eat)
 		start_sleep(philo);
 }

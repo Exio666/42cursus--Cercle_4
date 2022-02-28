@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:52:20 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 12:13:16 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/02/28 18:34:15 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ size_t	give_utime(void)
 
 void	_usleep(size_t time)
 {
-	size_t sleep;
+	size_t	sleep;
 
 	sleep = give_utime() + time;
 	while (give_utime() < sleep)
