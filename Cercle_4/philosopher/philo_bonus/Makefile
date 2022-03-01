@@ -6,7 +6,7 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/02/22 17:45:15 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/03/01 14:19:47 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ DEPS = $(SRCS:.c=.d)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD
+CFLAGS = -Wall -Wextra -Werror -MMD -pthread
 
 RM = rm -f
 

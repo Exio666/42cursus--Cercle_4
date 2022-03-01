@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:29:04 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/01 16:57:09 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 # define PHILO_H
 
 # include <unistd.h>
-# include <pthread.h>
+# include <semaphore.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <stdio.h>
 # include <string.h>
+# include <sys/types.h>
+# include <pthread.h>
+# include <fcntl.h>
+# include <sys/stat.h>
 
 # define LIST_OF_ARG "./philo time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
@@ -42,7 +46,6 @@ typedef struct s_info
 
 typedef struct s_fork
 {
-	pthread_mutex_t	fork;
 	int				take;
 }	t_fork;
 
@@ -61,13 +64,10 @@ typedef struct s_philo
 typedef struct s_global
 {
 	size_t			start_philo;
-	pthread_mutex_t	mutt_death;
-	pthread_mutex_t	mutt_print;
 	int				death;
 	t_info			info;
 	t_fork			*tab_fork;
 	size_t			time_start;
-	pthread_t		*tab_pthread;
 	t_philo			*tab_philo;
 }	t_global;
 
