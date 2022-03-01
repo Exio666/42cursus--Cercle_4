@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 18:24:38 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/23 19:04:03 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:26:20 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	destruc_fork(t_global *global, int nb_fork)
 	i = 0;
 	while (i < nb_fork)
 	{
-		pthread_mutex_destroy(&global->tab_fork[i]);
+		pthread_mutex_destroy(&global->tab_fork[i].fork);
 		i++;
 	}
 	free(global->tab_fork);

@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 18:40:20 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:55:20 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,10 @@
 
 # define LIST_OF_ARG "./philo time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
-
-/*
- *	Enumeration
- */
-
-typedef enum e_first_hand
-{
-	right = 0,
-	left = 1
-}	t_first_hand;
-
-typedef enum e_status
-{
-	eating = 0,
-	sleeping = 1,
-	thinking = 2
-}	t_status;
+# define TAKE_FORK "has taken a fork"
+# define SLEEP "is sleeping"
+# define EAT "is eating"
+# define THINK "is thinking"
 
 /*
  *	Structure
@@ -53,13 +40,17 @@ typedef struct s_info
 	int			number_eat;
 }	t_info;
 
+typedef struct s_fork
+{
+	pthread_mutex_t	fork;
+	int				take;
+}	t_fork;
+
 typedef struct s_philo
 {
 	int				name;
-	t_first_hand	first_hand;
-	pthread_mutex_t	*fork_left;
-	pthread_mutex_t	*fork_right;
-	t_status		status;
+	t_fork			*fork_left;
+	t_fork			*fork_right;
 	struct s_global	*global;
 	size_t			date_of_death;
 	t_info			info;
@@ -72,7 +63,7 @@ typedef struct s_global
 	pthread_mutex_t	mutt_print;
 	int				death;
 	t_info			info;
-	pthread_mutex_t	*tab_fork;
+	t_fork			*tab_fork;
 	size_t			time_start;
 	pthread_t		*tab_pthread;
 	t_philo			*tab_philo;
@@ -115,7 +106,7 @@ int				exit_time_or_mutex(void);
 
 int				check_av(int ac, char **av);
 t_info			feed_info(int ac, char **av);
-pthread_mutex_t	*creation_tab_fork(t_global *global);
+t_fork			*creation_tab_fork(t_global *global);
 t_global		*create_global(int ac, char **av);
 
 /*
@@ -132,7 +123,7 @@ int				ft_strlen(const char *s);
 int				ft_isdigit(int c);
 int				ft_isspace(char c);
 size_t			give_utime(void);
-void			_usleep(size_t time);
+void			_usleep(size_t time, t_philo *philo);
 
 /*
  *	philo_utils.c
@@ -142,10 +133,8 @@ int				check_int(char *str);
 long int		ft_atol(const char *nptr);
 void			printer_mutex(t_philo *philo, pthread_mutex_t *muttex,
 					int name, char *str);
-int				check_death(t_philo *philo, pthread_mutex_t *muttex);
-int				check_death_global(t_global *global, pthread_mutex_t *muttex);
-void			modifier_death(t_philo *philo, pthread_mutex_t *muttex,
-					int value);
+void			take_fork(t_philo *philo);
+void			drop_fork(t_philo *philo);
 
 /*
  *	routine.c

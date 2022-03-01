@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:31:34 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 12:12:12 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:42:27 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,20 @@ t_info	feed_info(int ac, char **av)
 	return (info);
 }
 
-pthread_mutex_t	*creation_tab_fork(t_global *global)
+t_fork	*creation_tab_fork(t_global *global)
 {
-	pthread_mutex_t	*tab_fork;
-	int				i;
+	t_fork	*tab_fork;
+	int		i;
 
 	i = 0;
-	tab_fork = malloc(sizeof(pthread_mutex_t) * global->info.nb_philo);
+	tab_fork = malloc(sizeof(t_fork) * global->info.nb_philo);
 	if (!tab_fork)
 		return (NULL);
+	memset(tab_fork, 0, sizeof(t_fork) * global->info.nb_philo);
 	while (i < global->info.nb_philo)
 	{
-		pthread_mutex_init(&tab_fork[i], NULL);
+		tab_fork[i].take = 0;
+		pthread_mutex_init(&tab_fork[i].fork, NULL);
 		i++;
 	}
 	return (tab_fork);
@@ -83,65 +85,3 @@ t_global	*create_global(int ac, char **av)
 	new->time_start = give_utime();
 	return (new);
 }
-
-/*
-int create_philo(t_global *global, t_global copie, int i)
-{
-	int		err;
-	void	*ptr;
-
-	copie.identity.name = i;
-	ptr = malloc(sizeof(t_global *));
-	ptr = &copie;
-	err = pthread_create(&global->philo[i], NULL, &start_routine, &ptr);
-	return (err);
-}
-
-int	launch_philo(t_global *global, t_global copie)
-{
-	int	i;
-	int err;
-	
-	i = 0;
-	while (i < global->info.nb_philo)
-	{
-		copie.identity.name = i;
-		err = create_philo(global, copie, i);
-		if (err != 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	creation_tab_fork(t_global *global)
-{
-	int	i;
-
-	i = 0;
-	global->tab_fork = malloc(sizeof(pthread_mutex_t)
-			* global->info.nb_philo);
-	if (!global->tab_fork)
-		return (0);
-	global->death = malloc(sizeof(int));
-	if (!global->death)
-	{
-		free(global->tab_fork);
-		return (0);
-	}
-	*global->death = 0;
-	global->philo = malloc(sizeof(pthread_t) * global->info.nb_philo);
-	if (!global->philo)
-	{
-		free(global->death);
-		free(global->tab_fork);
-		return (0);
-	}
-	while (i < global->info.nb_philo)
-	{
-		pthread_mutex_init(&global->tab_fork[i], NULL);
-		i++;
-	}
-	return (1);
-}
-*/

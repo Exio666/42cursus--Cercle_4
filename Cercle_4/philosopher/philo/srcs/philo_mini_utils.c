@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:52:20 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 18:34:15 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:08:30 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,15 @@ size_t	give_utime(void)
 	return ((size_t)time.tv_sec * 1000 + (size_t)time.tv_usec / 1000);
 }
 
-void	_usleep(size_t time)
+void	_usleep(size_t time, t_philo *philo)
 {
 	size_t	sleep;
 
 	sleep = give_utime() + time;
-	while (give_utime() < sleep)
-		usleep(1);
+	if (sleep > 0)
+	{
+		while (give_utime() < sleep && check_death(philo,
+				&philo->global->mutt_death))
+			usleep(1);
+	}
 }

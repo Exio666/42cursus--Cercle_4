@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/02/28 18:41:56 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:17:53 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,45 @@ void	printer_mutex(t_philo *philo, pthread_mutex_t *muttex,
 {
 	pthread_mutex_lock(muttex);
 	if (check_death(philo, &philo->global->mutt_death))
-		printf("%010li %i %s\n", give_utime() - philo->global->time_start,
-			name, str);
+		printf("%05li %i %s\n", give_utime() - philo->global->time_start,
+			name + 1, str);
 	pthread_mutex_unlock(muttex);
+}
+
+void	take_fork(t_philo *philo)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&philo->fork_right->fork);
+		if (philo->fork_right->take == 0)
+		{
+			philo->fork_right->take = 1;
+			pthread_mutex_unlock(&philo->fork_right->fork);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->fork_right->fork);
+	}
+	printer_mutex(philo, &philo->global->mutt_print, philo->name, TAKE_FORK);
+	while (1)
+	{
+		pthread_mutex_lock(&philo->fork_left->fork);
+		if (philo->fork_left->take == 0)
+		{
+			philo->fork_left->take = 1;
+			pthread_mutex_unlock(&philo->fork_left->fork);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->fork_left->fork);
+	}
+	printer_mutex(philo, &philo->global->mutt_print, philo->name, TAKE_FORK);
+}
+
+void	drop_fork(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->fork_right->fork);
+	philo->fork_right->take = 0;
+	pthread_mutex_unlock(&philo->fork_right->fork);
+	pthread_mutex_lock(&philo->fork_left->fork);
+	philo->fork_left->take = 0;
+	pthread_mutex_unlock(&philo->fork_left->fork);
 }
