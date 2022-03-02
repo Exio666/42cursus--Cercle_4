@@ -6,11 +6,11 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:31:34 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:23:15 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:50:23 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	check_av(int ac, char **av)
 {
@@ -28,6 +28,16 @@ int	check_av(int ac, char **av)
 	return (1);
 }
 
+t_philo	init_philo(t_global *global)
+{
+	t_philo	philo;
+
+	philo.global = global;
+	philo.info = global->info;
+	philo.number_of_eat = 0;
+	return (philo);
+}
+
 t_info	feed_info(int ac, char **av)
 {
 	t_info	info;
@@ -43,46 +53,21 @@ t_info	feed_info(int ac, char **av)
 	return (info);
 }
 
-t_fork	*creation_tab_fork(t_global *global)
+int	create_global(int ac, char **av, t_global *global)
 {
-	t_fork	*tab_fork;
-	int		i;
-
-	i = 0;
-	tab_fork = malloc(sizeof(t_fork) * global->info.nb_philo);
-	if (!tab_fork)
-		return (NULL);
-	memset(tab_fork, 0, sizeof(t_fork) * global->info.nb_philo);
-	while (i < global->info.nb_philo)
-	{
-		tab_fork[i].take = 0;
-		pthread_mutex_init(&tab_fork[i].fork, NULL);
-		i++;
-	}
-	return (tab_fork);
-}
-
-t_global	*create_global(int ac, char **av)
-{
-	t_global	*new;
-
 	if (!check_av(ac, av))
-		return (NULL);
-	new = malloc(sizeof(t_global));
-	if (!new)
-		return (NULL);
-	memset(new, 0, sizeof(t_global));
-	new->start_philo = give_utime() + 80;
-	new->death = 0;
-	new->info = feed_info(ac, av);
-	new->tab_fork = creation_tab_fork(new);
-	if (!new->tab_fork)
-	{
-		free(new);
-		return (NULL);
-	}
-	pthread_mutex_init(&new->mutt_print, NULL);
-	pthread_mutex_init(&new->mutt_death, NULL);
-	new->time_start = give_utime();
-	return (new);
+		return (0);
+	sem_unlink("forks");
+	sem_unlink("start");
+	sem_unlink("death");
+	sem_unlink("look_fork");
+	sem_unlink("print");
+	global->fork = sem_open("forks", O_CREAT, 777, global->info.nb_philo);
+	global->sem_start = sem_open("start", O_CREAT, 777, 0);
+	global->death = sem_open("death", O_CREAT, 777, 0);
+	global->look_fork = sem_open("look_fork", O_CREAT, 777, 1);
+	global->print = sem_open("print", O_CREAT, 777, 1);
+	global->info = feed_info(ac, av);
+	global->philo = init_philo(global);
+	return (1);
 }

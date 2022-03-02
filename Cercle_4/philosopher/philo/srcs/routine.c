@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 08:50:28 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:56:23 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:37:44 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	*routine(void *structure)
 	philo = structure;
 	while (give_utime() < philo->start)
 		;
+	philo->date_of_death = give_utime() + philo->info.time_to_die;
 	if (philo->name % 2 == 1)
 		_usleep(philo->info.time_to_eat - 10, philo);
-	philo->date_of_death = give_utime() + philo->info.time_to_die;
 	start_eat(philo);
 	return (NULL);
 }

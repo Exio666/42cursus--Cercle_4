@@ -1,40 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   end_tools.c                                        :+:      :+:    :+:   */
+/*   create_child.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/23 18:24:38 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 11:26:20 by bsavinel         ###   ########.fr       */
+/*   Created: 2022/02/23 19:04:33 by bsavinel          #+#    #+#             */
+/*   Updated: 2022/03/02 18:49:39 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-int	fusion_philo(t_global *global, int nb_philo)
+int	launch_philo(t_global *global)
 {
-	int	i;
+	int			i;
+	pid_t		pid;
+	t_global	launcher;
 
 	i = 0;
-	while (i < nb_philo)
+	launcher = *global;
+	while (i < global->info.nb_philo)
 	{
-		pthread_join(global->tab_pthread[i], NULL);
+		pid = fork();
+		if (pid == 0)
+		{
+			launcher.philo.name = i;
+			routine(launcher);
+			return (0);
+		}
 		i++;
 	}
-	return (1);
-}
-
-int	destruc_fork(t_global *global, int nb_fork)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb_fork)
-	{
-		pthread_mutex_destroy(&global->tab_fork[i].fork);
-		i++;
-	}
-	free(global->tab_fork);
 	return (1);
 }

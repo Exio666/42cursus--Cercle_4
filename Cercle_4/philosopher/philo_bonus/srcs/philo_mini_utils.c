@@ -6,11 +6,11 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:52:20 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:43:47 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:33:23 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	ft_strlen(const char *s)
 {
@@ -47,18 +47,17 @@ size_t	give_utime(void)
 	return ((size_t)time.tv_sec * 1000 + (size_t)time.tv_usec / 1000);
 }
 
-void	_usleep(size_t time, t_philo *philo)
+void	_usleep(size_t time, t_global *global)
 {
 	size_t	sleep;
 
 	sleep = give_utime() + time;
+	(void)global;
 	if (sleep > 0)
 	{
-		while (give_utime() / 100 < sleep / 100 && check_death(philo,
-				&philo->global->mutt_death))
+		while (give_utime() / 100 < sleep / 100)
 			usleep(100);
-		while (give_utime() < sleep && check_death(philo,
-				&philo->global->mutt_death))
+		while (give_utime() < sleep)
 			usleep(10);
 	}
 }

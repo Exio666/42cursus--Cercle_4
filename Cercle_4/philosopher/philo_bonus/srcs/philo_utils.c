@@ -6,11 +6,11 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:57:03 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:52:19 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	check_int(char *str)
 {
@@ -64,52 +64,46 @@ long int	ft_atol(const char *nptr)
 	return (nb);
 }
 
-void	printer_mutex(t_philo *philo, pthread_mutex_t *muttex,
-			int name, char *str)
+void	printer_sem(t_philo *philo, sem_t *print, int name, char *str)
 {
-	pthread_mutex_lock(muttex);
-	if (check_death(philo, &philo->global->mutt_death))
-		printf("%05li %i %s\n", give_utime() - philo->start,
-			name + 1, str);
-	pthread_mutex_unlock(muttex);
+	sem_wait(print);
+	if (check_death(philo))
+		printf("%05li %i %s\n", give_utime() - philo->start, name + 1, str);
+	sem_post(print);
 }
 
 void	take_fork(t_philo *philo)
 {
+	int take;
+
+	take = 0;
 	while (give_utime() < philo->date_of_death)
 	{
-		pthread_mutex_lock(&philo->fork_right->fork);
-		if (philo->fork_right->take == 0)
+		sem_wait(philo->global->look_fork);
+		if (philo->global->fork->__align >= 2)
 		{
-			philo->fork_right->take = 1;
-			pthread_mutex_unlock(&philo->fork_right->fork);
+			take = 1;
+			sem_wait(philo->global->fork);
+			sem_wait(philo->global->fork);
+			printf("pris\n");
 			break ;
 		}
-		pthread_mutex_unlock(&philo->fork_right->fork);
+		sem_post(philo->global->look_fork);
 	}
-	printer_mutex(philo, &philo->global->mutt_print, philo->name, TAKE_FORK);
-	while (give_utime() <= philo->date_of_death + 1)
+	printf("sorti\n");
+	if (take == 1)
 	{
-		pthread_mutex_lock(&philo->fork_left->fork);
-		if (philo->fork_left->take == 0)
-		{
-			philo->fork_left->take = 1;
-			pthread_mutex_unlock(&philo->fork_left->fork);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->fork_left->fork);
+		printer_sem(philo, philo->global->print, philo->name, TAKE_FORK);
+		printer_sem(philo, philo->global->print, philo->name, TAKE_FORK);
 	}
-	if (give_utime() > philo->date_of_death)
-		modifier_death(philo, &philo->global->mutt_death, -1);
-	printer_mutex(philo, &philo->global->mutt_print, philo->name, TAKE_FORK);
 }
 
 void	drop_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->fork_right->fork);
-	philo->fork_right->take = 0;
-	pthread_mutex_unlock(&philo->fork_right->fork);
-	pthread_mutex_lock(&philo->fork_left->fork);
-	philo->fork_left->take = 0;
-	pthread_mutex_unlock(&philo->fork_left->fork);
+	printf("debut drop\n");
+	sem_wait(philo->global->look_fork);
+	sem_post(philo->global->fork);
+	sem_post(philo->global->fork);
+	sem_post(philo->global->look_fork);
+	printf("fin drop\n");
 }

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 16:57:09 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:38:20 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <unistd.h>
 # include <semaphore.h>
@@ -23,6 +23,7 @@
 # include <pthread.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 
 # define LIST_OF_ARG "./philo time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
@@ -37,42 +38,38 @@
 
 typedef struct s_info
 {
-	int			nb_philo;
-	size_t		time_to_die;
-	size_t		time_to_eat;
-	size_t		time_to_sleep;
-	int			number_eat;
+	int		nb_philo;
+	size_t	time_to_die;
+	size_t	time_to_eat;
+	size_t	time_to_sleep;
+	int		number_eat;
 }	t_info;
-
-typedef struct s_fork
-{
-	int				take;
-}	t_fork;
 
 typedef struct s_philo
 {
 	int				name;
-	t_fork			*fork_left;
-	t_fork			*fork_right;
-	struct s_global	*global;
-	size_t			date_of_death;
 	t_info			info;
-	int				number_of_eat;
 	size_t			start;
+	int				number_of_eat;
+	size_t			date_of_death;
+	struct s_global	*global;
+	
 }	t_philo;
 
 typedef struct s_global
 {
-	size_t			start_philo;
-	int				death;
-	t_info			info;
-	t_fork			*tab_fork;
-	size_t			time_start;
-	t_philo			*tab_philo;
+	sem_t	*death;
+	sem_t	*sem_start;
+	sem_t	*fork;
+	sem_t	*look_fork;
+	sem_t	*print;
+	t_info	info;
+	t_philo	philo;
+	
 }	t_global;
 
 /*
- *	create_thread.c
+ *	create_child.c
  */
 
 int				launch_philo(t_global *global);
@@ -81,41 +78,24 @@ int				launch_philo(t_global *global);
  *	death.c
  */
 
-int				check_death(t_philo *philo, pthread_mutex_t *muttex);
-int				check_death_global(t_global *global, pthread_mutex_t *muttex);
-void			modifier_death(t_philo *philo, pthread_mutex_t *muttex,
-					int value);
-
-/*
- *	end_tools.c
- */
-
-int				destruc_fork(t_global *global, int nb_fork);
-int				fusion_philo(t_global *global, int nb_philo);
+int				check_death(t_philo *philo);
+void			modifier_death(t_philo *philo);
 
 /*
  *	end.c
  */
 
 int				good_end(t_global *global);
-int				exit_no_tab_philo(t_global *global);
 int				exit_no_arg(void);
-int				exit_time_or_mutex(void);
 
 /*
  *	init_global.c
  */
 
 int				check_av(int ac, char **av);
+t_philo			init_philo(t_global *global);
 t_info			feed_info(int ac, char **av);
-t_fork			*creation_tab_fork(t_global *global);
-t_global		*create_global(int ac, char **av);
-
-/*
- *	init_tab_philo.c
- */
-
-int				creation_tab_philo(t_global *global);
+int				create_global(int ac, char **av, t_global *global);
 
 /*
  *	philo_mini_utils.c
@@ -125,7 +105,7 @@ int				ft_strlen(const char *s);
 int				ft_isdigit(int c);
 int				ft_isspace(char c);
 size_t			give_utime(void);
-void			_usleep(size_t time, t_philo *philo);
+void			_usleep(size_t time, t_global *global);
 
 /*
  *	philo_utils.c
@@ -133,8 +113,7 @@ void			_usleep(size_t time, t_philo *philo);
 
 int				check_int(char *str);
 long int		ft_atol(const char *nptr);
-void			printer_mutex(t_philo *philo, pthread_mutex_t *muttex,
-					int name, char *str);
+void			printer_sem(t_philo *philo, sem_t *sem, int name, char *str);
 void			take_fork(t_philo *philo);
 void			drop_fork(t_philo *philo);
 
@@ -142,7 +121,7 @@ void			drop_fork(t_philo *philo);
  *	routine.c
  */
 
-void			*routine(void *structure);
+void			routine(t_global global);
 void			start_eat(t_philo *philo);
 void			start_sleep(t_philo *philo);
 

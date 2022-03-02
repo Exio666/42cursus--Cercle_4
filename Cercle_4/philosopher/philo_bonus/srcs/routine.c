@@ -6,60 +6,55 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 08:50:28 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:56:23 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:47:20 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	start_sleep(t_philo *philo)
 {
-	printer_mutex(philo, &philo->global->mutt_print, philo->name, SLEEP);
-	_usleep(philo->info.time_to_sleep, philo);
+	printer_sem(philo, philo->global->print, philo->name, SLEEP);
+	_usleep(philo->info.time_to_sleep, philo->global);
 	if (give_utime() > philo->date_of_death)
-		modifier_death(philo, &philo->global->mutt_death, -1);
-	printer_mutex(philo, &philo->global->mutt_print, philo->name, THINK);
-	_usleep(1, philo);
+		modifier_death(philo);
+	printer_sem(philo, philo->global->print, philo->name, THINK);
+	_usleep(1, philo->global);
 	start_eat(philo);
 }
 
 void	start_eat(t_philo *philo)
 {
 	if (give_utime() > philo->date_of_death)
-		modifier_death(philo, &philo->global->mutt_death, -1);
+		modifier_death(philo);
 	take_fork(philo);
 	if (give_utime() > philo->date_of_death)
-		modifier_death(philo, &philo->global->mutt_death, -1);
-	if (check_death(philo, &philo->global->mutt_death))
+		modifier_death(philo);
+	if (check_death(philo))
 	{
-		printer_mutex(philo, &philo->global->mutt_print, philo->name, EAT);
-		_usleep(philo->info.time_to_eat, philo);
+		printer_sem(philo, philo->global->print, philo->name, EAT);
+		_usleep(philo->info.time_to_eat, philo->global);
 	}
 	if (give_utime() > philo->date_of_death)
-		modifier_death(philo, &philo->global->mutt_death, -1);
+		modifier_death(philo);
 	else
 	{
 		philo->number_of_eat += 1;
 		philo->date_of_death = give_utime() + philo->info.time_to_die;
 	}
 	drop_fork(philo);
-	if (philo->number_of_eat != philo->info.number_eat)
-		modifier_death(philo, &philo->global->mutt_death, 1);
-	if (check_death(philo, &philo->global->mutt_death)
-		&& philo->number_of_eat != philo->info.number_eat)
+	if (check_death(philo) && philo->number_of_eat != philo->info.number_eat)
 		start_sleep(philo);
 }
 
-void	*routine(void *structure)
+void	routine(t_global global)
 {
-	t_philo	*philo;
-
-	philo = structure;
-	while (give_utime() < philo->start)
+	global.philo.global = &global;
+	while (global.sem_start->__align == 0)
 		;
-	if (philo->name % 2 == 1)
-		_usleep(philo->info.time_to_eat - 10, philo);
-	philo->date_of_death = give_utime() + philo->info.time_to_die;
-	start_eat(philo);
-	return (NULL);
+	global.philo.start = give_utime();
+	global.philo.date_of_death = global.philo.start + global.philo.info.time_to_die;
+	if (global.philo.name % 2 == 1)
+		_usleep(global.philo.info.time_to_eat - 10, global.philo.global);
+	start_eat(&global.philo);
 }
