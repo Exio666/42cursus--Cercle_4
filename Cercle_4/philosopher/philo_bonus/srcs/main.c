@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:50:45 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/02 17:18:12 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 11:25:50 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int ac, char **av)
 	if (retour)
 	{
 		sem_post(global.sem_start);
-		waitpid(-1, NULL, 0);
+		while (waitpid(-1, NULL, 0) > 0)
+			;
 		good_end(&global);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/02 17:38:20 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:23:51 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_info
 	size_t	time_to_eat;
 	size_t	time_to_sleep;
 	int		number_eat;
+	size_t	med_time_think;
 }	t_info;
 
 typedef struct s_philo
@@ -53,7 +54,6 @@ typedef struct s_philo
 	int				number_of_eat;
 	size_t			date_of_death;
 	struct s_global	*global;
-	
 }	t_philo;
 
 typedef struct s_global
@@ -65,37 +65,26 @@ typedef struct s_global
 	sem_t	*print;
 	t_info	info;
 	t_philo	philo;
-	
 }	t_global;
 
 /*
- *	create_child.c
- */
-
-int				launch_philo(t_global *global);
-
-/*
- *	death.c
+ *	death_end.c
  */
 
 int				check_death(t_philo *philo);
 void			modifier_death(t_philo *philo);
-
-/*
- *	end.c
- */
-
 int				good_end(t_global *global);
 int				exit_no_arg(void);
 
 /*
- *	init_global.c
+ *	initialisation.c
  */
 
 int				check_av(int ac, char **av);
 t_philo			init_philo(t_global *global);
 t_info			feed_info(int ac, char **av);
 int				create_global(int ac, char **av, t_global *global);
+int				launch_philo(t_global *global);
 
 /*
  *	philo_mini_utils.c

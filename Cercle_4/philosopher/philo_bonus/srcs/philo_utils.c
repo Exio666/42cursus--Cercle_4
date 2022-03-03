@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:35:29 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/02 18:52:19 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 13:46:41 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void	printer_sem(t_philo *philo, sem_t *print, int name, char *str)
 
 void	take_fork(t_philo *philo)
 {
-	int take;
+	int	take;
 
 	take = 0;
-	while (give_utime() < philo->date_of_death)
+	while (give_utime() <= philo->date_of_death)
 	{
 		sem_wait(philo->global->look_fork);
 		if (philo->global->fork->__align >= 2)
@@ -85,12 +85,13 @@ void	take_fork(t_philo *philo)
 			take = 1;
 			sem_wait(philo->global->fork);
 			sem_wait(philo->global->fork);
-			printf("pris\n");
+			sem_post(philo->global->look_fork);
 			break ;
 		}
 		sem_post(philo->global->look_fork);
 	}
-	printf("sorti\n");
+	if (give_utime() > philo->date_of_death)
+		modifier_death(philo);
 	if (take == 1)
 	{
 		printer_sem(philo, philo->global->print, philo->name, TAKE_FORK);
@@ -100,10 +101,8 @@ void	take_fork(t_philo *philo)
 
 void	drop_fork(t_philo *philo)
 {
-	printf("debut drop\n");
 	sem_wait(philo->global->look_fork);
 	sem_post(philo->global->fork);
 	sem_post(philo->global->fork);
 	sem_post(philo->global->look_fork);
-	printf("fin drop\n");
 }

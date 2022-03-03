@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_global.c                                      :+:      :+:    :+:   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:31:34 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:23:15 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:06:50 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,31 @@ t_global	*create_global(int ac, char **av)
 	pthread_mutex_init(&new->mutt_death, NULL);
 	new->time_start = give_utime();
 	return (new);
+}
+
+int	creation_tab_philo(t_global *global)
+{
+	int	i;
+	int	nb_philo;
+
+	i = 0;
+	nb_philo = global->info.nb_philo;
+	global->tab_philo = malloc(sizeof(t_philo) * nb_philo);
+	if (!global->tab_philo)
+		return (0);
+	memset(global->tab_philo, 0, sizeof(t_philo) * nb_philo);
+	while (i < nb_philo)
+	{
+		global->tab_philo[i].start = global->start_philo;
+		global->tab_philo[i].name = i;
+		global->tab_philo[i].fork_right = &global->tab_fork[i];
+		global->tab_philo[i].fork_left = &global->tab_fork[(i + 1) % nb_philo];
+		global->tab_philo[i].global = global;
+		global->tab_philo[i].date_of_death = global->start_philo
+			+ global->info.time_to_die;
+		global->tab_philo[i].info = global->info;
+		global->tab_philo[i].number_of_eat = 0;
+		i++;
+	}
+	return (1);
 }

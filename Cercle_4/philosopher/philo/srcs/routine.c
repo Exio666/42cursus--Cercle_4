@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 08:50:28 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:37:44 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:07:30 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,24 @@ void	*routine(void *structure)
 		_usleep(philo->info.time_to_eat - 10, philo);
 	start_eat(philo);
 	return (NULL);
+}
+
+int	launch_philo(t_global *global)
+{
+	int	i;
+	int	err;
+
+	i = 0;
+	global->tab_pthread = malloc(sizeof(pthread_t) * global->info.nb_philo);
+	if (!global->tab_pthread)
+		return (-1);
+	while (i < global->info.nb_philo)
+	{
+		err = pthread_create(&global->tab_pthread[i], NULL, &routine,
+				&global->tab_philo[i]);
+		if (err != 0)
+			return (i);
+		i++;
+	}
+	return (0);
 }

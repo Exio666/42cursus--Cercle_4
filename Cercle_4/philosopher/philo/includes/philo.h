@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:29:31 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:29:04 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:10:54 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,6 @@ typedef struct s_global
 }	t_global;
 
 /*
- *	create_thread.c
- */
-
-int				launch_philo(t_global *global);
-
-/*
  *	death.c
  */
 
@@ -103,18 +97,13 @@ int				exit_no_arg(void);
 int				exit_time_or_mutex(void);
 
 /*
- *	init_global.c
+ *	init_struct.c
  */
 
 int				check_av(int ac, char **av);
 t_info			feed_info(int ac, char **av);
 t_fork			*creation_tab_fork(t_global *global);
 t_global		*create_global(int ac, char **av);
-
-/*
- *	init_tab_philo.c
- */
-
 int				creation_tab_philo(t_global *global);
 
 /*
@@ -135,8 +124,6 @@ int				check_int(char *str);
 long int		ft_atol(const char *nptr);
 void			printer_mutex(t_philo *philo, pthread_mutex_t *muttex,
 					int name, char *str);
-void			take_fork(t_philo *philo);
-void			drop_fork(t_philo *philo);
 
 /*
  *	routine.c
@@ -145,5 +132,15 @@ void			drop_fork(t_philo *philo);
 void			*routine(void *structure);
 void			start_eat(t_philo *philo);
 void			start_sleep(t_philo *philo);
+int				launch_philo(t_global *global);
+
+/*
+ *	take_and_drop.c
+ */
+
+void			take_right(t_philo *philo);
+void			take_left(t_philo *philo);
+void			take_fork(t_philo *philo);
+void			drop_fork(t_philo *philo);
 
 #endif

@@ -6,14 +6,12 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/03/02 17:19:53 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/03/03 15:24:31 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	srcs/create_child.c		\
-		srcs/death.c				\
-		srcs/end.c				\
-		srcs/init_global.c		\
+SRCS =	srcs/death_end.c		\
+		srcs/initialisation.c	\
 		srcs/main.c				\
 		srcs/philo_mini_utils.c	\
 		srcs/philo_utils.c		\
@@ -25,7 +23,7 @@ DEPS = $(SRCS:.c=.d)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD -pthread -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -MMD -pthread #-g3 -fsanitize=address
 
 RM = rm -f
 

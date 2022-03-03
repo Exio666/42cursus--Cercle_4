@@ -6,7 +6,7 @@
 /*   By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 08:50:28 by bsavinel          #+#    #+#             */
-/*   Updated: 2022/03/02 18:47:20 by bsavinel         ###   ########.fr       */
+/*   Updated: 2022/03/03 14:33:05 by bsavinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	start_sleep(t_philo *philo)
 	if (give_utime() > philo->date_of_death)
 		modifier_death(philo);
 	printer_sem(philo, philo->global->print, philo->name, THINK);
-	_usleep(1, philo->global);
+	_usleep(philo->info.med_time_think + 5, philo->global);
 	start_eat(philo);
 }
 
@@ -52,9 +52,13 @@ void	routine(t_global global)
 	global.philo.global = &global;
 	while (global.sem_start->__align == 0)
 		;
-	global.philo.start = give_utime();
-	global.philo.date_of_death = global.philo.start + global.philo.info.time_to_die;
+	global.philo.date_of_death = give_utime() + global.philo.info.time_to_die;
 	if (global.philo.name % 2 == 1)
 		_usleep(global.philo.info.time_to_eat - 10, global.philo.global);
 	start_eat(&global.philo);
+	sem_close(global.death);
+	sem_close(global.print);
+	sem_close(global.fork);
+	sem_close(global.look_fork);
+	sem_close(global.sem_start);
 }

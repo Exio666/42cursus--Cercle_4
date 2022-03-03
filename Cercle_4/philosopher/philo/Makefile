@@ -6,20 +6,19 @@
 #    By: bsavinel <bsavinel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 17:14:10 by bsavinel          #+#    #+#              #
-#    Updated: 2022/03/01 13:15:39 by bsavinel         ###   ########.fr        #
+#    Updated: 2022/03/03 15:09:52 by bsavinel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	srcs/create_thread.c	\
-		srcs/death.c			\
+SRCS =	srcs/death.c			\
 		srcs/end_tools.c		\
 		srcs/end.c				\
-		srcs/init_global.c		\
-		srcs/init_tab_philo.c	\
+		srcs/init_struct.c		\
 		srcs/main.c				\
 		srcs/philo_mini_utils.c	\
 		srcs/philo_utils.c		\
-		srcs/routine.c
+		srcs/routine.c			\
+		srcs/take_and_drop.c
 
 OBJS = $(SRCS:.c=.o)
 
